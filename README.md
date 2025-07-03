@@ -57,7 +57,12 @@ This image compiles **Tengine 3.1.0** from source and integrates:
 ### 1. Build the Image
 
 ```bash
-docker build -t tengine-fancyindex .
+docker buildx create --name multiarch-builder --use
+docker buildx build --no-cache \
+  --platform linux/amd64,linux/arm64 .
+#  -t docker.io/jas0n0ss/tengine-fancyindex:latest \
+#  --push \
+#  .
 ```
 
 ### 2. Prepare Content & SSL
@@ -80,7 +85,6 @@ openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
 docker run -d \
   -p 8083:80 \
   -p 8084:443 \
-#  --env-file .env \
   -e HTTP_AUTH="on" \
   -e HTTP_USERNAME="myuser" \
   -e HTTP_PASSWD="mypassword" \
@@ -124,6 +128,4 @@ Start with:
 ```bash
 docker-compose up -d
 ```
-
-
 
