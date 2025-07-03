@@ -32,7 +32,7 @@ http {
             try_files $uri =404;
         }
 
-        # ✅ Markdown 渲染
+        # Markdown
         location ~ \.md$ {
             gzip off;
             include fastcgi_params;

@@ -3,10 +3,10 @@ FROM alpine:3.19
 LABEL maintainer="Jas0n0ss"
 ENV TENGINE_VERSION=3.1.0
 
-# 准备必要路径，防止 pkgconfig 错误
+# Create necessary path to prevent pkgconfig errors
 RUN mkdir -p /usr/lib/pkgconfig && chmod 755 /usr/lib/pkgconfig
 
-# 安装依赖（包括 markdown 渲染、fcgiwrap、构建工具等）
+# Install dependencies (including markdown rendering, fcgiwrap, build tools, etc.)
 RUN apk add --no-cache \
     build-base \
     pcre-dev \
@@ -28,13 +28,13 @@ RUN apk add --no-cache \
     gettext \
  && rm -rf /var/cache/apk/*
 
-# 下载 ngx-fancyindex 模块
+# Clone ngx-fancyindex module
 RUN git clone https://github.com/aperezdc/ngx-fancyindex.git /usr/src/ngx-fancyindex
 
-# 设置工作目录
+# Set working directory
 WORKDIR /usr/src
 
-# 下载并构建 Tengine（不带 Lua 支持）
+# Download and build Tengine (without Lua support)
 RUN wget https://github.com/alibaba/tengine/archive/refs/tags/${TENGINE_VERSION}.tar.gz \
  && tar zxvf ${TENGINE_VERSION}.tar.gz \
  && cd tengine-${TENGINE_VERSION} \
@@ -52,19 +52,19 @@ RUN wget https://github.com/alibaba/tengine/archive/refs/tags/${TENGINE_VERSION}
  && make -j$(nproc) && make install \
  && cd / && rm -rf /usr/src/*
 
-# 创建目录
+# Create necessary directories
 RUN mkdir -p /app/public /app/ssl /theme /var/www/html
 
-# 安装主题
+# Install Fancyindex theme
 RUN git clone https://github.com/TheInsomniac/Nginx-Fancyindex-Theme /theme \
  && cp -r /theme/* /var/www/html/
 
-# 拷贝配置模板与入口脚本
+# Copy config template and entrypoint script
 COPY nginx.conf.template /etc/nginx/nginx.conf.template
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-# 挂载点和端口
+# Define volumes and expose ports
 VOLUME ["/app/public", "/app/ssl"]
 EXPOSE 80 443
 
