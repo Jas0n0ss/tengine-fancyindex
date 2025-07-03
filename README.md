@@ -92,7 +92,8 @@ docker run -d \
   -v $(pwd)/public:/app/public \
   -v $(pwd)/ssl:/app/ssl \
   --restart unless-stopped \
-  tengine-fancyindex
+  jas0n0ss/tengine-fancyindex
+  # ghcr.io/jas0n0ss/tengine-fancyindex 
 ```
 
 - **Disable SSL:** `-e ENABLE_SSL="off"`
@@ -128,4 +129,3 @@ Start with:
 ```bash
 docker-compose up -d
 ```
-
