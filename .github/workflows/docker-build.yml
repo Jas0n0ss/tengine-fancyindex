@@ -44,4 +44,6 @@ jobs:
           push: true
           tags: |
             ghcr.io/jas0n0ss/tengine-fancyindex:latest
+            ghcr.io/jas0n0ss/tengine-fancyindex:${{ github.sha }}
             ${{ secrets.DOCKERHUB_USERNAME }}/tengine-fancyindex:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/tengine-fancyindex:${{ github.sha }}
