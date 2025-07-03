@@ -1,0 +1,15 @@
+services:
+  tengine-fancy:
+    build: .
+    container_name: tengine-fancy
+    ports:
+      - "8083:80"
+      - "8084:443"
+    env_file: .env
+    volumes:
+      - ./public:/app/public
+      - ./ssl:/app/ssl
+    tmpfs:
+      - /tmp
+    restart: unless-stopped
+
